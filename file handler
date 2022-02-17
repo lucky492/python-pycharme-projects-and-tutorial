@@ -1,0 +1,66 @@
+"""
+        FOLDER MAKE-UP
+
+Write a python program that will keep similar files in a common folder.
+If folder not exist then first create the folder and then store
+
+Eg - Suppose in this location "D:\ptestfor puython" some .mp3,.jpg
+.jpeg and unknown file format are present.
+
+so you have to keep all .mp3 in files in a folder like mp3files.If
+any such folder exist before then don't create.
+
+similar things have to be done with all other files.
+
+
+    HINT - use os module to open any path
+"""
+def file_arranger(folder_name,files_lists):
+
+    #Create folder if it does not exist before
+    path = os.path.join(location, folder_name)
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+    #move files to their respective folders
+    for file in files_lists:
+        shutil.move(location +"\\"+file , location +"\\"+folder_name)
+
+if __name__ == '__main__':
+    import shutil
+    import os
+
+    # location = "D:\ptestfor puythonm"
+    location = input("Enter full location where you want to arrange files : \n")
+
+    folder_list = [ ]
+    while True:
+        print("Press q to quit")
+        a = input("Enter the name of folder you want to create \n"
+                  "with extension like .mp3 or .mp4: \n")
+        folder_list.append(a)
+        if a == "q":
+            folder_list.remove("q")
+            break
+
+    temporary_files = os.listdir(location)
+    files = [ ]
+    for elements in temporary_files:
+        if elements not in folder_list:
+            #check if any folder exist before then append
+            if os.path.isfile(location + "\\" + elements) == True:
+                files.append(elements)
+
+    dict = {}
+    for folder in folder_list:
+        if folder:
+            dict[folder] = []
+            for file in files:
+                h, f = os.path.splitext(file)
+                h2, f2 = os.path.splitext(folder)
+                if f == f2:
+                     dict[folder].append(file)
+        else: break
+
+    for key,value in dict.items():
+        file_arranger(key,value)
